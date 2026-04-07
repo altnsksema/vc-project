@@ -18,20 +18,29 @@ const CreateStory = () => {
   });
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      // Backend'deki @router.post("/api/stories/") kısmına selam gönderiyoruz
-      const response = await axios.post('http://127.0.0.1:8000/api/stories/', {
-        ...formData,
-        author: user?.username // Otomatik olarak giriş yapan yazarın adını ekle
-      });
-      
+  e.preventDefault();
+  try {
+    const response = await axios.post('http://127.0.0.1:8000/api/stories/', {
+      ...formData,
+      author: user?.username 
+    });
+    
+    console.log("Backend'den gelen cevap:", response.data);
+    
+    const newStoryId = response.data.id || response.data.story_id; 
+    
+    if (newStoryId) {
       alert("Evrenin ilk tohumu atıldı! 🌌");
-      navigate(`/hikaye/${response.data.id}`); // Yeni hikayenin detayına git
-    } catch (err) {
-      console.error("Hikaye oluşturulurken bir hata oluştu:", err);
+      // App.jsx'teki rotan "/hikaye/:id" olduğu için burayı kontrol et:
+      navigate(`/hikaye/${newStoryId}`); 
+    } else {
+      alert("Hikaye eklendi ama ID alınamadı! 😱");
     }
-  };
+  } catch (err) {
+    console.error("Hata Detayı:", err.response?.data || err.message);
+    alert("Bir şeyler ters gitti Sema!");
+  }
+};
 
   return (
     <Container maxWidth="sm" sx={{ mt: 8, mb: 8 }}>

@@ -13,18 +13,22 @@ const StoryDetail = () => {
   const currentUser = JSON.parse(localStorage.getItem('user')); 
 
   useEffect(() => {
-    const fetchDetail = async () => {
-      try {
-        const res = await axios.get(`http://127.0.0.1:8000/api/stories/${id}`);
-        setData(res.data);
-      } catch (err) {
-        console.error("Veri çekilemedi!");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchDetail();
-  }, [id]);
+  // id yoksa veya kelime olarak "undefined" ise hiçbir şey yapma
+  if (!id || id === "undefined") return;
+
+  const fetchDetail = async () => {
+    try {
+      const res = await axios.get(`http://127.0.0.1:8000/api/stories/${id}`);
+      setData(res.data);
+    } catch (err) {
+      console.error("Veri çekilemedi!", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchDetail();
+}, [id]);
 
   if (loading) return <div className="p-20 text-center animate-pulse text-orange-600 font-bold">Evren yükleniyor...</div>;
   if (!data) return <div className="p-20 text-center text-red-500 font-bold">Hikaye bulunamadı!</div>;
