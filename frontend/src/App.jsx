@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import NotificationBell from './components/notifications/NotificationBell';
 import ChapterEditor from './pages/ChapterEditor';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import CreateStory from './pages/CreateStory';
 
 // --- Material UI Importları (Eksik kısımlar için) ---
 import { Popover, List, ListItem, ListItemIcon, ListItemText, Divider, Avatar } from '@mui/material';
@@ -113,6 +114,7 @@ function App() {
             <Route path="/hikaye/:id" element={<StoryDetail />} />
             <Route path="/profil/:authorName" element={<AuthorProfile />} />
             <Route path="/hikaye/:storyId/yeni-bolum" element={<ChapterEditor />} />
+            <Route path="/yeni-hikaye" element={<CreateStory />} />
             {/* Henüz boş olan rotalar için geçici mesajlar */}
             <Route path="/yeni-hikaye" element={<div className="p-20 text-center font-bold">📖 Buradan yeni bir dünya başlatacaksın Sema... (Yapım Aşamasında)</div>} />
             <Route path="/kutuphane" element={<div className="p-20 text-center font-bold">📚 Okuduğun ve yazdığın her şey burada olacak.</div>} />
