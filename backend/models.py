@@ -14,7 +14,7 @@ class Story(Base):
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
 
     # Bu satır sihirli: "Hikayeye gitince bölümleri de göreyim" diyor
-    chapters = relationship("Chapter", back_populates="owner", cascade="all, delete-orphan")
+    chapters = relationship("Chapter", back_populates="story", cascade="all, delete-orphan")
 
 # BÖLÜM PLANI (Çocuk tablo)
 class Chapter(Base):
@@ -26,4 +26,4 @@ class Chapter(Base):
     # Bu satır bölümü hikayeye zincirliyor
     story_id = Column(Integer, ForeignKey("stories.id"))
 
-    owner = relationship("Story", back_populates="chapters")
+    story = relationship("Story", back_populates="chapters")
