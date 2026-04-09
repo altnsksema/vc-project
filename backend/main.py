@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 import models
 from database import engine
-from routers import stories, chapters, comments 
+from routers import stories, chapters, comments, users
 from fastapi.middleware.cors import CORSMiddleware
 
 models.Base.metadata.create_all(bind=engine)
@@ -24,6 +24,7 @@ app.add_middleware(
 app.include_router(stories.router)
 app.include_router(chapters.router)
 app.include_router(comments.router)
+app.include_router(users.router)
 
 @app.get("/")
 def home():

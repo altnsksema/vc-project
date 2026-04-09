@@ -78,11 +78,15 @@ def update_story(story_id: int, story_data: StoryUpdate, db: Session = Depends(g
 
 # 5. TEK BİR HİKAYEYİ SİL (DELETE)
 @router.delete("/{story_id}/")
-def delete_story(story_id: int, db: Session = Depends(get_db)):
+def delete_story(story_id: int, current_user: str, db: Session = Depends(get_db)):
     db_story = db.query(models.Story).filter(models.Story.id == story_id).first()
     
     if not db_story:
         raise HTTPException(status_code=404, detail="Silinmek istenen hikaye bulunamadı!")
+
+    # KRİTİK KONTROL: Hikayeyi yazan kişiyle isteği atan kişi aynı mı?
+    if db_story.author != current_user:
+        raise HTTPException(status_code=403, detail="Sema, başkasının hikayesini silemezsin!")
 
     db.delete(db_story)
     db.commit()
